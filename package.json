@@ -1,0 +1,23 @@
+{
+    "name": "particle-test",
+    "version": "1.0.0",
+    "description": "test for npm dom-particle-system",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack-dev-server --entry ./src/index.js --output-filename ./build/index.bundle.js"
+    },
+    "author": "me",
+    "license": "ISC",
+    "dependencies": {
+        "css-loader": "^6.6.0",
+        "dom-particle-system": "^1.0.10",
+        "html-webpack-plugin": "^5.5.0",
+        "style-loader": "^3.3.1",
+        "webpack": "^5.69.1",
+        "webpack-cli": "^4.9.2"
+    },
+    "devDependencies": {
+        "webpack-dev-server": "^4.7.4"
+    }
+}
