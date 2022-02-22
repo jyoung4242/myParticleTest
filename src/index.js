@@ -4,13 +4,14 @@ import { ParticleSystem } from 'dom-particle-system';
 import { snowEmitterOptions } from './snowflake.js';
 import { fireworksEmitterOptions } from './fireworks.js';
 import { fireEmitter, smokeEmitter } from './bonfire.js';
+import { magicEmitterOptions } from './magic.js';
 
 export let divParticle;
 let selectcontrol;
 let maindiv;
 let pOptions, sOptions;
 let myEmitter, myEmitter2;
-let campfire;
+let campfire, magi;
 let engine;
 const fpsElem = document.getElementById('fps');
 
@@ -71,8 +72,9 @@ function init() {
     maindiv = document.getElementById('divworld');
     selectcontrol = document.getElementById('particletype');
     campfire = document.getElementById('fire');
+    magi = document.getElementById('magic');
     selectcontrol.addEventListener('change', changeParticles);
-    selectcontrol.value = 'bonfire';
+    selectcontrol.value = 'magic';
 
     divParticle = ParticleSystem.create(particleSystemOptions);
     engine.engineStart();
@@ -97,6 +99,7 @@ function changeParticles() {
             myEmitter.enableEmitter();
             //hide fire
             campfire.classList.add('hidden');
+            magi.classList.add('hidden');
             maindiv.style.backgroundColor = '#000000';
             break;
         case 'fireworks':
@@ -104,10 +107,12 @@ function changeParticles() {
             myEmitter = divParticle.addEmitter(pOptions);
             myEmitter.enableEmitter();
             campfire.classList.add('hidden');
+            magi.classList.add('hidden');
             maindiv.style.backgroundColor = '#000000';
             break;
         case 'bonfire':
             campfire.classList.remove('hidden');
+            magi.classList.add('hidden');
             pOptions = fireEmitter;
             sOptions = smokeEmitter;
             maindiv.style.backgroundColor = '#ffffff';
@@ -115,6 +120,14 @@ function changeParticles() {
             myEmitter2 = divParticle.addEmitter(sOptions);
             myEmitter.enableEmitter();
             myEmitter2.enableEmitter();
+            break;
+        case 'magic':
+            maindiv.style.backgroundColor = '#dddddd';
+            pOptions = magicEmitterOptions;
+            campfire.classList.add('hidden');
+            magi.classList.remove('hidden');
+            myEmitter = divParticle.addEmitter(pOptions);
+            myEmitter.enableEmitter();
             break;
     }
 }

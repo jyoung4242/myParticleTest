@@ -28,6 +28,18 @@ body {
     z-index: 0;
 }
 
+#magic {
+    position: absolute;
+    width: 175px;
+    height: 175px;
+    background-image: url('./assets/magic.png');
+    background-size: 1152px 576px;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
 #fps {
     position: absolute;
     top: 715px;

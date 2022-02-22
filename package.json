@@ -11,7 +11,7 @@
     "license": "ISC",
     "dependencies": {
         "css-loader": "^6.6.0",
-        "dom-particle-system": "^1.0.10",
+        "dom-particle-system": "1.0.9",
         "html-webpack-plugin": "^5.5.0",
         "style-loader": "^3.3.1",
         "webpack": "^5.69.1",
