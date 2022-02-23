@@ -3,9 +3,15 @@ import snow1 from './assets/snowflake1.png';
 import snow2 from './assets/snowflake2.png';
 import snow3 from './assets/snowflake3.png';
 
+//********************************* */
+//angle params (p,d,l,s)
+//velocity params (a,p,d,l,s)
+//zindex params (v,a,p,d,l,s)
+//********************************* */
 let snowParticleOptions = {
-    texture: [snow1, snow2, snow3], //object for spritesheets, string for static image, or array of strings of images
-    animation: false,
+    //general purpose params
+    parentElement: 'divworld',
+    emitterLabel: 'snowfall',
     isLiving: true,
     loop: true,
     size: [
@@ -14,10 +20,14 @@ let snowParticleOptions = {
         { x: 20, y: 20 },
         { x: 10, y: 10 },
         { x: 30, y: 30 },
-    ], //function, vector, array of vectors
+    ],
+    lifespan: 32,
+
+    //positional and behavioral params
+    position: new Vector(),
     angle: 0,
-    angleVelocity: [-1, -0.5, -0.25, 0, 0.25, 0.5, 1], //array, number, function
-    velocity: function (a, p, d, s) {
+    angleVelocity: [-1, -0.5, -0.25, 0, 0.25, 0.5, 1],
+    velocity: function (a, p, d, l, s) {
         let x, y;
         let arry = {
             10: 0.35,
@@ -29,37 +39,46 @@ let snowParticleOptions = {
         y = arry[s.x];
         x = Math.sin(degrees_to_radians(a)) / 2;
         return { x: x, y: y };
-    }, //function, vector, array of vectors
-    position: new Vector(), //function, vector, array of vectors
-    clipString: '',
-    blendStrength: 100, //opacity of innerdiv
-    lifespan: 32, //int, array, function
-    parentElement: 'divworld',
-    emitterLabel: 'snowfall',
+    },
     zindex: 2,
-    gravity: 0, //int, array, function
-    transforms: {}, // "param": {time: {start: 0 end: 0}},{values: {start: 0, end: 0}};
+    gravity: 0,
+
+    //animation and texture params
+    texture: [snow1, snow2, snow3],
+    animation: false,
+    animationObject: {},
+    clipString: '',
+    blendStrength: 100,
+
+    //transforms
+    transforms: {},
 };
 
 export let snowEmitterOptions = {
+    //general purpos params
     emitterLabel: 'snowfall',
-    numParticles: 600,
-    burstCount: 1,
-    emittingLocation: new Vector(50, 50),
-    loop: true,
-    enable: false,
+    parentElement: 'divworld',
     shape: 'rectangle', // circle, rectangle
     region: 'area', //area|edge
     size: { x: '100%', y: 5 },
-    position: new Vector(0, 0),
-    emitRate: 50,
+    position: new Vector(0, -5),
+    emittingPoint: new Vector(0, 0),
+    texture: '',
+    zindex: 1,
+    lifespan: -1,
+
+    //emission params
+    numParticles: 600,
+    loop: true,
+    enable: false,
+    emitRate: 0.05,
+    burstGap: 0,
+    burstCount: 1,
+
+    //passed functions
     particleOnCreate() {},
     particleOnDestroy() {},
-    initialVelocityTransform() {},
     particleOptions: snowParticleOptions,
-    texture: {},
-    parentElement: 'divworld',
-    zindex: 1,
 };
 
 function degrees_to_radians(degrees) {

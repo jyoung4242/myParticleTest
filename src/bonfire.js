@@ -1,20 +1,19 @@
 import { Vector, Sequence } from 'dom-particle-system';
-import smoke from './assets/smoke.png';
-import fire from './assets/fire.png';
+import smokeball from './assets/smoke.png';
+import fireball from './assets/fire.png';
 
 let animationFrameRate = 0.15;
 let smokeAnimationSequence = new Sequence('0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44', true, animationFrameRate);
 
+//********************************* */
+//angle params (p,d,l,s)
+//velocity params (a,p,d,l,s)
+//zindex params (v,a,p,d,l,s)
+//********************************* */
 let smokeParticleOptions = {
-    texture: smoke, //object for spritesheets, string for static image, or array of strings of images
-    animation: true,
-    animationObject: {
-        framePosition: new Vector(0, 0),
-        frameSize: new Vector(256, 256),
-        numRows: 7,
-        numCols: 7,
-        sequence: smokeAnimationSequence,
-    },
+    //general purpose params
+    parentElement: 'divworld',
+    emitterLabel: 'smoke',
     isLiving: true,
     loop: true,
     size: [
@@ -23,31 +22,45 @@ let smokeParticleOptions = {
         { x: 40, y: 40 },
         { x: 80, y: 80 },
         { x: 75, y: 75 },
-    ], //function, vector, array of vectors
+    ],
+    lifespan: [7, 7.25, 8.5, 8.75, 9, 9.5],
+
+    //positional and behavioral params
+    position: new Vector(),
     angle: 0,
-    angleVelocity: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2], //array, number, function
-    velocity: function (a, p, d, s) {
+    angleVelocity: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2],
+    velocity: function (a, p, d, l, s) {
         let x;
         x = Math.sin(degrees_to_radians(a) / 40);
         return { x: x, y: -1 };
-    }, //function, vector, array of vectors
-    position: new Vector(), //function, vector, array of vectors
-    clipString: '',
-    blendStrength: 50, //opacity of innerdiv
-    lifespan: [7, 7.25, 8.5, 8.75, 9, 9.5], //int, array, function
-    parentElement: 'divworld',
-    emitterLabel: 'smoke',
+    },
     zindex: 2,
-    gravity: 0, //int, array, function
+    gravity: 0,
+
+    //animation and texture params
+    texture: smokeball,
+    animation: true,
+    animationObject: {
+        framePosition: new Vector(0, 0),
+        frameSize: new Vector(256, 256),
+        numRows: 7,
+        numCols: 7,
+        sequence: smokeAnimationSequence,
+    },
+    clipString: '',
+    blendStrength: 50,
+
+    //transforms
     transforms: {
-        opacity: { time: { start: 0.1, end: 1 }, values: { start: 0.5, end: 0 } },
-        size: { time: { start: 1, end: 3 }, values: { start: 0.2, end: 1 } },
-    }, // "param": {time: {start: 0 end: 0}},{values: {start: 0, end: 0}};
+        0: { type: 'opacity', time: { start: 0, end: 1 }, values: { start: 0.9, end: 0 } },
+        1: { type: 'size', time: { start: 0.25, end: 1 }, values: { start: 1, end: 8 } },
+    },
 };
 
 let fireParticleoptions = {
-    texture: fire, //object for spritesheets, string for static image, or array of strings of images
-    animation: false,
+    //general purpose params
+    parentElement: 'divworld',
+    emitterLabel: 'fire',
     isLiving: true,
     loop: true,
     size: [
@@ -55,68 +68,87 @@ let fireParticleoptions = {
         { x: 15, y: 15 },
         { x: 20, y: 20 },
         { x: 10, y: 10 },
-    ], //function, vector, array of vectors
+    ],
+    lifespan: [0.75, 1.0, 0.5],
+
+    //positional and behavioral params
+    position: new Vector(),
     angle: 0,
-    angleVelocity: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2], //array, number, function
-    velocity: function (a, p, d, s) {
+    angleVelocity: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2],
+    velocity: function (a, p, d, l, s) {
         let x;
         x = Math.sin(degrees_to_radians(a) / 6);
         return { x: x, y: -1 };
-    }, //function, vector, array of vectors
-    position: new Vector(), //function, vector, array of vectors
+    },
+    zindex: 2,
+    gravity: 0,
+
+    //animation and texture params
+    texture: fireball,
+    animation: false,
+    animationObject: {},
     clipString: '',
-    blendStrength: 50, //opacity of innerdiv
-    lifespan: [1, 1.25, 1.5, 1.75, 2, 2.5], //int, array, function
-    parentElement: 'divworld',
-    emitterLabel: 'fire',
-    zindex: 1,
-    gravity: 0, //int, array, function
+    blendStrength: 50,
+
+    //transforms
     transforms: {
-        opacity: { time: { start: 0.7, end: 1 }, values: { start: 0.8, end: 0 } },
-        size: { time: { start: 0.5, end: 1 }, values: { start: 1, end: 0.2 } },
-    }, // "param": {time: {start: 0 end: 0}},{values: {start: 0, end: 0}};
+        0: { type: 'size', time: { start: 0.8, end: 1 }, values: { start: 1, end: 0.2 } },
+        1: { type: 'size', time: { start: 0, end: 0.8 }, values: { start: 1.1, end: 1 } },
+    },
 };
 
 export let smokeEmitter = {
+    //general purpos params
     emitterLabel: 'smoke',
-    numParticles: 400,
-    burstCount: 1,
-    emittingLocation: {},
-    loop: true,
-    enable: false,
+    parentElement: 'divworld',
     shape: 'rectangle', // circle, rectangle
     region: 'area', //area|edge
     size: { x: 30, y: 25 },
     position: new Vector(550, 450),
-    emitRate: 0.5,
+    emittingPoint: new Vector(0, 0),
+    texture: '',
+    zindex: 1,
+    lifespan: -1,
+
+    //emission params
+    numParticles: 400,
+    loop: true,
+    enable: false,
+    emitRate: 0.05,
+    burstGap: 0,
+    burstCount: 1,
+
+    //passed functions
     particleOnCreate() {},
     particleOnDestroy() {},
-    initialVelocityTransform() {},
     particleOptions: smokeParticleOptions,
-    texture: '../assets/greensquare.png',
-    parentElement: 'divworld',
-    zindex: 1,
 };
 
 export let fireEmitter = {
+    //general purpos params
     emitterLabel: 'fire',
-    numParticles: 50,
-    burstCount: 1,
-    emittingLocation: {},
-    loop: true,
-    enable: false,
+    parentElement: 'divworld',
     shape: 'rectangle', // circle, rectangle
     region: 'area', //area|edge
     size: { x: 49, y: 25 },
     position: new Vector(565, 570),
-    emitRate: 0.2,
+    emittingPoint: new Vector(0, 0),
+    texture: '',
+    zindex: 1,
+    lifespan: -1,
+
+    //emission params
+    numParticles: 30,
+    loop: true,
+    enable: false,
+    emitRate: 0.02,
+    burstGap: 0,
+    burstCount: 1,
+
+    //passed functions
     particleOnCreate() {},
     particleOnDestroy() {},
-    initialVelocityTransform() {},
     particleOptions: fireParticleoptions,
-    texture: '../assets/greensquare.png',
-    parentElement: 'divworld',
-    zindex: 1,
 };
 
 function degrees_to_radians(degrees) {
